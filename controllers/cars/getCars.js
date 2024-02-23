@@ -8,9 +8,9 @@ export const getCars = async ({ query }, res) => {
 
 	const totalCars = await Cars.countDocuments({});
 
-	const data = await Cars.find({}, '-createdAt -updatedAt', {
+	const data = await Cars.find({}, null, {
 		skip,
-		perPage,
+		limit: perPage,
 	});
 
 	res.json({ countCars: totalCars, data });
