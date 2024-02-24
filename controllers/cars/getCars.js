@@ -10,7 +10,7 @@ export const getCars = async ({ query }, res) => {
 	}
 
 	if (price !== '') {
-		params.push({ rentalPriceNumeric: { $gte: parseFloat(price) } });
+		params.push({ rentalPriceNumeric: { $lte: parseFloat(price) } });
 	}
 
 	if (from !== '' || to !== '') {
