@@ -23,27 +23,33 @@ export const getCars = async ({ query }, res) => {
 		}
 	}
 
-	const data = await Cars.aggregate([
+	const queryLine = [
 		{
 			$addFields: {
 				rentalPriceNumeric: { $toDouble: { $substr: ['$rentalPrice', 1, -1] } },
 			},
 		},
-		{
+	];
+
+	if (params.length > 0) {
+		queryLine.push({
 			$match: {
 				$and: params,
 			},
-		},
-		{
-			$facet: {
-				totalCars: [{ $count: 'total' }],
-				data: [{ $skip: (page - 1) * perPage }, { $limit: perPage }],
-			},
-		},
-	]);
+		});
+	}
 
-	const totalCars = data[0].totalCars[0].total;
-	const cars = data[0].data;
+	queryLine.push({
+		$facet: {
+			totalCars: [{ $count: 'total' }],
+			data: [{ $skip: (page - 1) * perPage }, { $limit: perPage }],
+		},
+	});
+
+	const data = await Cars.aggregate(queryLine);
+
+	const totalCars = data[0]?.totalCars[0]?.total || 0;
+	const cars = data[0]?.data || [];
 
 	res.json({ totalCars, data: cars });
 };
