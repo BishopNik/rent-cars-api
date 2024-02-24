@@ -17,15 +17,15 @@ export const getParams = async (_, res) => {
 	const minPrice = Math.min(...priceArray);
 	const maxPrice = Math.max(...priceArray);
 
-	const start = Math.floor(minPrice / 10);
-	const finish = Math.floor(maxPrice / 10) + 1;
+	const min = Math.floor(minPrice / 10);
+	const max = Math.floor(maxPrice / 10) + 1;
 	const makes = Array.from(make).sort((a, b) => a.localeCompare(b));
 
 	res.json({
 		makes,
 		price: {
-			start,
-			finish,
+			min,
+			max,
 		},
 	});
 };
