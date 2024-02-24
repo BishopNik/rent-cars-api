@@ -6,6 +6,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import carsRouter from './routes/api/cars.js';
+import paramsRouter from './routes/api/params.js';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/cars', carsRouter);
+app.use('/api/params', paramsRouter);
 
 app.use((_req, res) => {
 	res.status(404).json({ message: 'Not found' });
